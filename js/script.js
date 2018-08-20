@@ -1,56 +1,47 @@
 var myCanvas = document.querySelector(".canvas-container");
 var ctx = myCanvas.getContext("2d");
-var squareWidth = 70;
-var squareHeigth = 35;
+var squareWidth = 69;
+var squareHeigth = 33;
 
-// // row 1
-// ctx.fillStyle = "grey";
-// ctx.fillRect(0, 0, squareWidth, squareHeigth);
+function randomNumber () {
+    if(Math.floor(Math.random() * 10) % 2 === 1) {
+        return 2;
+    } else {
+        return 4;
+    }
+}
 
-// ctx.fillStyle = "grey";
-// ctx.fillRect(77, 0, squareWidth, squareHeigth);
 
-// ctx.fillStyle = "grey";
-// ctx.fillRect(154, 0, squareWidth, squareHeigth);
+function Position(array) {
+var i = Math.floor(Math.random() * array.length);
+console.log(array[i]);
+var x = this.x;
+var y = this.y;
+var width = this.width;
+var height = this.height;
 
-// ctx.fillStyle = "grey";
-// ctx.fillRect(230, 0, squareWidth, squareHeigth);
+ctx.strokeStyle = "black";
+ctx.strokeRect(array.x[i], array.y[i], array.width[i], array.height[i]);
+}
 
-// row 2
-ctx.fillStyle = "grey";
-ctx.fillRect(0, 38, squareWidth, squareHeigth);
+var blockPosition = [
+{ x: 0, y: 0, width: 69, height: 33 },
+{ x: 76, y: 0, width: squareWidth, height: squareHeigth },
+{ x: 154, y: 0, width: squareWidth, height: squareHeigth },
+{ x: 230, y: 0, width: squareWidth, height: squareHeigth },
+{ x: 0, y: 37, width: squareWidth, height: squareHeigth },
+{ x: 77, y:37, width: squareWidth, height: squareHeigth },
+{ x: 154, y: 37, width: squareWidth, height: squareHeigth },
+{ x: 230, y: 37, width: squareWidth, height: squareHeigth },
+{ x: 0, y: 75, width: squareWidth, height: squareHeigth },
+{ x: 77, y: 75, width: squareWidth, height: squareHeigth },
+{ x: 154, y: 75, width: squareWidth, height: squareHeigth },
+{ x: 230, y: 75, width: squareWidth, height: squareHeigth },
+{ x: 0, y: 113, width: squareWidth, height: squareHeigth },
+{ x: 77, y: 113, width: squareWidth, height: squareHeigth },
+{ x: 154, y: 113, width: squareWidth, height: squareHeigth },
+{ x: 230, y: 113, width: squareWidth, height: squareHeigth },
+];
 
-ctx.fillStyle = "grey";
-ctx.fillRect(77, 38, squareWidth, squareHeigth);
 
-ctx.fillStyle = "grey";
-ctx.fillRect(154, 38, squareWidth, squareHeigth);
-
-ctx.fillStyle = "grey";
-ctx.fillRect(230, 38, squareWidth, squareHeigth);
-
-// row 3
-ctx.fillStyle = "grey";
-ctx.fillRect(0, 76, squareWidth, squareHeigth);
-
-ctx.fillStyle = "grey";
-ctx.fillRect(77, 76, squareWidth, squareHeigth);
-
-ctx.fillStyle = "grey";
-ctx.fillRect(154, 76, squareWidth, squareHeigth);
-
-ctx.fillStyle = "grey";
-ctx.fillRect(230, 76, squareWidth, squareHeigth);
-
-// // row 4
-// ctx.fillStyle = "grey";
-// ctx.fillRect(0, 114, squareWidth, squareHeigth);
-
-// ctx.fillStyle = "grey";
-// ctx.fillRect(77, 114, squareWidth, squareHeigth);
-
-// ctx.fillStyle = "grey";
-// ctx.fillRect(154, 114, squareWidth, squareHeigth);
-
-// ctx.fillStyle = "grey";
-// ctx.fillRect(230, 114, squareWidth, squareHeigth);
+new Position(blockPosition);
