@@ -1,0 +1,41 @@
+.container {
+    width: 800px;
+    height: 540px;
+    margin: 0 auto;
+    /* padding-bottom: 700px; */
+    padding-top: 20px;
+    text-align: center;
+    display: block;
+    border: 1px solid black;
+    border-radius: 4px;
+}
+
+.heading {
+    width: 920px;
+    height: 100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+}
+
+.game-container {
+    width: 502px;
+    height: 500px;
+    margin: 0 auto;
+    display: block;
+    border: 1px solid black;
+}
+
+.canvas-container {
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    display: block;
+    /* border: 1px solid black; */
+}
+
+.grid-row1 {
+    width: 500px;
+    height: 20%;
+}
