@@ -2,7 +2,7 @@ body {
     background-color: #E7D7C1;
 }
 .container {
-    width: 540px;
+    width: 530px;
     height: 525px;
     margin: 0 auto;
     padding-top: 20px;
@@ -36,12 +36,52 @@ h1 {
     text-align: right;
 }
 
-button {
-    width: 10%;
-    height: 10%;
-    padding: 0;
-border: none;
-background: none;
+.score {
+    position: relative;
+    display: inline-block;
+    background: #A78A7F;
+    padding: 15px 25px;
+    font-size: 25px;
+    height: 25px;
+    line-height: 47px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.best-score {
+    position: relative;
+    display: inline-block;
+    background: #A78A7F;
+    padding: 15px 25px;
+    font-size: 25px;
+    height: 25px;
+    line-height: 47px;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.restart-buton {
+    display: inline-block;
+    background: #735751;
+    border-radius: 3px;
+    padding: 0px;
+    color: #E7D7C1;
+    height: 54px;
+    text-align: center;
+    float: right;
+    cursor: pointer;
+    position: relative;
+    margin-top: 8px;
+    margin-left: 20px;
+    width: 54px;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 img {

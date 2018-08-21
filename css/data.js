@@ -76,3 +76,28 @@ ctx.fillRect(230, 113, squareWidth, squareHeigth);
 // position14: { x: 77, y: 113, width: squareWidth, height: squareHeigth },
 // position15: { x: 154, y: 113, width: squareWidth, height: squareHeigth },
 // position16: { x: 230, y: 113, width: squareWidth, height: squareHeigth },
+
+
+
+
+
+
+
+var blockPosition = [
+    { x: 0, y: 0, width: squareWidth, height: squareHeigth },
+    { x: 76, y: 0, width: squareWidth, height: squareHeigth },
+    { x: 154, y: 0, width: squareWidth, height: squareHeigth },
+    { x: 230, y: 0, width: squareWidth, height: squareHeigth },
+    { x: 0, y: 37, width: squareWidth, height: squareHeigth },
+    { x: 77, y:37, width: squareWidth, height: squareHeigth },
+    { x: 154, y: 37, width: squareWidth, height: squareHeigth },
+    { x: 230, y: 37, width: squareWidth, height: squareHeigth },
+    { x: 0, y: 75, width: squareWidth, height: squareHeigth },
+    { x: 77, y: 75, width: squareWidth, height: squareHeigth },
+    { x: 154, y: 75, width: squareWidth, height: squareHeigth },
+    { x: 230, y: 75, width: squareWidth, height: squareHeigth },
+    { x: 0, y: 113, width: squareWidth, height: squareHeigth },
+    { x: 77, y: 113, width: squareWidth, height: squareHeigth },
+    { x: 154, y: 113, width: squareWidth, height: squareHeigth },
+    { x: 230, y: 113, width: squareWidth, height: squareHeigth },
+    ];
