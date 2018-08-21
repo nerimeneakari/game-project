@@ -30,12 +30,15 @@ var blockPosition = [
     [230, 113],
 ];
 
+allBlocks = [];
+
 function Block(myX, myY, width, heigth) {
     this.x = myX;
     this.y = myY;
     this.width = 69;
     this.heigth = 33;
-}
+    
+};
 Block.prototype.drawMe = function () {
     ctx.fillStyle = "#EADEDA";
     ctx.fillRect(this.x, this.y, this.width, this.heigth);
@@ -44,7 +47,7 @@ Block.prototype.drawMe = function () {
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#735751";
     ctx.fillText(randomNumber(), this.x + (this.width / 2), this.y + this.heigth / 2);
-}
+};
 
 function positionFirstTwoBlocks() {
     var rand = Math.floor(Math.random() * blockPosition.length);
@@ -55,10 +58,13 @@ function positionFirstTwoBlocks() {
         }
         var block = new Block(blockPosition[rand][0], blockPosition[rand][1], this.width, this.heigth);
         block.drawMe();
+        allBlocks.push(block);
     }
 };
 
 positionFirstTwoBlocks();
+
+
 
 // document.onkeydown = function() {
 //     event.preventDefault();
