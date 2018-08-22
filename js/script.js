@@ -1,14 +1,8 @@
-var myCanvas = document.querySelector(".canvas-container");
+var myCanvas = document.querySelector("canvas");
 var ctx = myCanvas.getContext("2d");
 
-// --------- Random 2 ou 4 --------------------------
-function randomNumber() {
-    if (Math.floor(Math.random() * 10) % 2 === 1) {
-        return 2;
-    } else {
-        return 4;
-    }
-};
+var xGravity = 0;
+var yGravity = 0;
 
 // --- toutes les positions possibles dans la grille ----
 var blockPosition = [
@@ -32,22 +26,39 @@ var blockPosition = [
 
 allBlocks = [];
 
-function Block(myX, myY, width, heigth) {
+function Block(myX, myY) {
     this.x = myX;
     this.y = myY;
     this.width = 69;
-    this.heigth = 33;
-    
+    this.height = 33;
+    this.value = Math.random() > 0.5 ? 2 : 4;
 };
 Block.prototype.drawMe = function () {
     ctx.fillStyle = "#EADEDA";
-    ctx.fillRect(this.x, this.y, this.width, this.heigth);
-    ctx.font = "20px Helvetica Neue";
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.font = "normal bold 20px Helvetica Neue";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillStyle = "#735751";
-    ctx.fillText(randomNumber(), this.x + (this.width / 2), this.y + this.heigth / 2);
+
+    ctx.fillText(this.value, this.x + (this.width / 2), this.y + this.height / 2);
+
 };
+Block.prototype.controlBoundries = function () {
+    if (this.x < 0) {
+        this.x = 0;
+    }
+    if (this.y < 0) {
+        this.y = 0;
+    }
+    if (this.x > myCanvas.width - this.width) {
+        this.x = myCanvas.width - this.width;
+    }
+    if (this.y > myCanvas.height - this.height - 4) {
+        this.y = myCanvas.height - this.height - 4;
+    }
+};
+
 
 function positionFirstTwoBlocks() {
     var rand = Math.floor(Math.random() * blockPosition.length);
@@ -56,7 +67,7 @@ function positionFirstTwoBlocks() {
         while (rand === oldRand) {
             var rand = Math.floor(Math.random() * blockPosition.length);
         }
-        var block = new Block(blockPosition[rand][0], blockPosition[rand][1], this.width, this.heigth);
+        var block = new Block(blockPosition[rand][0], blockPosition[rand][1], this.width, this.height);
         block.drawMe();
         allBlocks.push(block);
     }
@@ -64,27 +75,42 @@ function positionFirstTwoBlocks() {
 
 positionFirstTwoBlocks();
 
+function updateBlock() {
+    ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    allBlocks.forEach(function (oneBlock) {
+        oneBlock.drawMe();
+        oneBlock.x += xGravity;
+        oneBlock.y += yGravity;
+        oneBlock.controlBoundries();
+    });
+    requestAnimationFrame(function () {
+        updateBlock();
+    });
+};
+updateBlock();
 
 
-// document.onkeydown = function() {
-//     event.preventDefault();
-//     switch (event.keyCode) {
-//         case 37: //left arrow
-//         ctx.clearRect(this.x, this.y, this.width, this.heigth);
-        
+document.onkeydown = function () {
+    event.preventDefault();
+        switch (event.keyCode) {
+            case 37: //left arrow
+                xGravity = -5;
+                yGravity = 0;
+                break;
 
-//         break;
+            case 38: //up arrow
+                yGravity = -5;
+                xGravity = 0;
+                break;
 
-//         case 38: //up arrow
-        
-//         break;
+            case 39: //right arrow
+                xGravity = +5;
+                yGravity = 0;
+                break;
 
-//         case 39: //right arrow
-        
-//         break;
-
-//         case 40: //down arrow
-        
-//         break;
-//     }
-// }
+            case 40: //down arrow
+                yGravity = +5;
+                xGravity = 0;
+                break;
+        }
+}

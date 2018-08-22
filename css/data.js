@@ -78,7 +78,12 @@ ctx.fillRect(230, 113, squareWidth, squareHeigth);
 // position16: { x: 230, y: 113, width: squareWidth, height: squareHeigth },
 
 
-
+var blockPosition = [
+    [0, 0, 76, 0, 154, 0, 230, 0],
+    [0, 37, 77, 37, 154, 37, 230, 37],
+    [0, 75, 77, 75, 154, 75, 230, 75],
+    [0, 113, 77, 113, 154, 113, 230, 113],
+];
 
 
 

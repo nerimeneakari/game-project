@@ -98,7 +98,7 @@ img {
     z-index: 1;
 }
 
-.canvas-container {
+canvas {
     width: 500px;
     height: 500px;
     margin: 0 auto;
