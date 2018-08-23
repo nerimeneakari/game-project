@@ -9,12 +9,13 @@ var blockPosition = [
     [0, 0], [76, 0], [154, 0], [230, 0],
     [0, 37], [77, 37], [154, 37], [230, 37],
     [0, 75], [77, 75], [154, 75], [230, 75],
-    [0, 113], [77, 113], [154, 113], [230, 113],
+    [0, 113], [77, 113], [154, 113], [230, 113]
 ];
 
 var rand = Math.floor(Math.random() * blockPosition.length);
 
 var allBlocks = [];
+var newBlock = 0;
 var xGravity = 0;
 var yGravity = 0;
 
@@ -41,15 +42,19 @@ Block.prototype.drawMe = function () {
 Block.prototype.controlBoundries = function () {
     if (this.x < 0) {
         this.x = 0;
+        this.xGravity = 0;
     }
     if (this.y < 0) {
         this.y = 0;
+        this.yGravity = 0;
     }
     if (this.x > myCanvas.width - this.width) {
         this.x = myCanvas.width - this.width;
+        this.xGravity = 0;
     }
     if (this.y > myCanvas.height - this.height - 5) {
         this.y = myCanvas.height - this.height - 5;
+        this.yGravity = 0;
     }
 };
 
@@ -68,6 +73,30 @@ function positionFirstTwoBlocks() {
 
 positionFirstTwoBlocks();
 
+function checkFinish() {
+    var isFinished = true;
+    allBlocks.forEach( function( eachBlock ) {
+        if( eachBlock.xGravity !== 0 || eachBlock.yGravity !== 0 ) {
+            isFinished = false;
+        }
+    })
+    return isFinished;
+}
+
+function createNewBlock() {
+    if( newBlock === 0 ) {
+        var freeSlots = blockPosition.filter( function( eachSlot ) {
+            for( var i = 0; i < allBlocks.length; i++ ) {
+                if( eachSlot[0] !== allBlocks[i].x && eachSlot[1] !== allBlocks[i].y ) {
+                    return eachSlot;
+                }
+            }
+        })
+        console.log( freeSlots );
+        newBlock = 1;
+    }
+}
+
 function updateBlock() {
     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
     allBlocks.forEach(function (oneBlock) {
@@ -75,6 +104,9 @@ function updateBlock() {
         oneBlock.x += oneBlock.xGravity;
         oneBlock.y += oneBlock.yGravity;
         oneBlock.controlBoundries();
+        if( checkFinish() ) {
+            createNewBlock();
+        }
         allBlocks.forEach(function (anotherBlock) {
             var anotherx = anotherBlock.x
             if (collision(oneBlock, anotherBlock) && oneBlock !== anotherBlock) {
@@ -84,13 +116,14 @@ function updateBlock() {
                         if (oneBlock.x > anotherBlock.x) {
                             anotherBlock.x = oneBlock.x - oneBlock.width - 8;
                             anotherBlock.xGravity = 0;
+                            // console.log(checkFinish());
                         }
                     }
                     else if (anotherBlock.xGravity < 0) { // else if gravity goes left
                         if (oneBlock.x < anotherBlock.x) {
                             anotherBlock.x = oneBlock.x + oneBlock.width + 8;
                             anotherBlock.xGravity = 0;
-                            checkForFinish()
+                            // console.log(checkFinish());
                         }
                     }
                 }
@@ -100,12 +133,14 @@ function updateBlock() {
                         if (oneBlock.y < anotherBlock.y) {
                             anotherBlock.y = oneBlock.y + oneBlock.height + 4;
                             anotherBlock.yGravity = 0;
+                            // console.log(checkFinish());
                         }
                     }
                     else if (anotherBlock.yGravity > 0) { // else if gravity down
                         if (oneBlock.y > anotherBlock.y) {
                             anotherBlock.y = oneBlock.y - oneBlock.height - 4;
                             anotherBlock.yGravity = 0;
+                            // console.log(checkFinish());
                         }
                     }
                 }
@@ -120,8 +155,8 @@ function updateBlock() {
 updateBlock();
 
 function collision(rectA, rectB) {
-    return rectA.x < rectB.x + rectB.width + 6
-        && rectA.x + rectA.width + 6 > rectB.x
+    return rectA.x < rectB.x + rectB.width + 8
+        && rectA.x + rectA.width + 8 > rectB.x
         && rectA.y < rectB.y + rectB.height + 4
         && rectA.height + 4 + rectA.y > rectB.y;
 };
@@ -157,4 +192,7 @@ document.onkeydown = function () {
         oneBlock.xGravity = xGravity;
         oneBlock.yGravity = yGravity;
     })
+    newBlock = 0;
+    // var newBlock = new Block(new Block(blockPosition[rand][0], blockPosition[rand][1], false));
+    // newBlock.drawMe();
 };
