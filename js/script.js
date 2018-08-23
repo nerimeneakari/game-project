@@ -1,18 +1,22 @@
 var myCanvas = document.querySelector("canvas");
 var ctx = myCanvas.getContext("2d");
 
-var xGravity = 0;
-var yGravity = 0;
+
+// var isNew;
 
 // --- toutes les positions possibles dans la grille ----
 var blockPosition = [
-    [0, 0], [76, 0], [152, 0], [230, 0],
-    [0, 38], [77, 38], [152, 38], [230, 38],
-    [0, 75], [77, 75], [152, 75], [230, 75],
-    [0, 113], [77, 113], [152, 113], [230, 113],
+    [0, 0], [76, 0], [154, 0], [230, 0],
+    [0, 37], [77, 37], [154, 37], [230, 37],
+    [0, 75], [77, 75], [154, 75], [230, 75],
+    [0, 113], [77, 113], [154, 113], [230, 113],
 ];
 
-allBlocks = [];
+var rand = Math.floor(Math.random() * blockPosition.length);
+
+var allBlocks = [];
+var xGravity = 0;
+var yGravity = 0;
 
 function Block(myX, myY, isNew) {
     this.x = myX;
@@ -20,6 +24,9 @@ function Block(myX, myY, isNew) {
     this.width = 69;
     this.height = 33;
     this.value = Math.random() > 0.5 ? 2 : 4;
+    this.isNew = isNew;
+    this.xGravity = 0;
+    this.yGravity = 0;
 };
 Block.prototype.drawMe = function () {
     ctx.fillStyle = "#EADEDA";
@@ -48,13 +55,12 @@ Block.prototype.controlBoundries = function () {
 
 
 function positionFirstTwoBlocks() {
-    var rand = Math.floor(Math.random() * blockPosition.length);
     for (var i = 0; i < 2; i++) {
         var oldRand = rand;
         while (rand === oldRand) {
             var rand = Math.floor(Math.random() * blockPosition.length);
         }
-        var block = new Block(blockPosition[rand][0], blockPosition[rand][1]);
+        var block = new Block(blockPosition[rand][0], blockPosition[rand][1], false);
         block.drawMe();
         allBlocks.push(block);
     }
@@ -66,36 +72,47 @@ function updateBlock() {
     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
     allBlocks.forEach(function (oneBlock) {
         oneBlock.drawMe();
-        oneBlock.x += xGravity;
-        oneBlock.y += yGravity;
+        oneBlock.x += oneBlock.xGravity;
+        oneBlock.y += oneBlock.yGravity;
         oneBlock.controlBoundries();
         allBlocks.forEach(function (anotherBlock) {
+            var anotherx = anotherBlock.x
             if (collision(oneBlock, anotherBlock) && oneBlock !== anotherBlock) {
-                console.log("collision");
+                // VERSION RANGEE
                 if (oneBlock.y === anotherBlock.y) {  // if same y
-                    if (xGravity > 0) { // if gravity goes right
+                    if (anotherBlock.xGravity > 0) { // if gravity goes right
                         if (oneBlock.x > anotherBlock.x) {
-                            anotherBlock.x = oneBlock.x - oneBlock.width - 7;
-                        }
-                    } else if (xGravity < 0) { // else if gravity goes left
-                        if (oneBlock.x < anotherBlock.x) {
-                            anotherBlock.x = oneBlock.x + oneBlock.width + 7;
+                            anotherBlock.x = oneBlock.x - oneBlock.width - 8;
+                            anotherBlock.xGravity = 0;
                         }
                     }
-                } else if (oneBlock.x === anotherBlock.x) {  // else if same x
-                    if (yGravity < 0) { // if gravity goes up
+                    else if (anotherBlock.xGravity < 0) { // else if gravity goes left
+                        if (oneBlock.x < anotherBlock.x) {
+                            anotherBlock.x = oneBlock.x + oneBlock.width + 8;
+                            anotherBlock.xGravity = 0;
+                            checkForFinish()
+                        }
+                    }
+                }
+                // VERSION COLONNE
+                else if (oneBlock.x === anotherBlock.x) {  // else if same x
+                    if (anotherBlock.yGravity < 0) { // if gravity goes up
                         if (oneBlock.y < anotherBlock.y) {
                             anotherBlock.y = oneBlock.y + oneBlock.height + 4;
+                            anotherBlock.yGravity = 0;
                         }
-                    } else if (yGravity > 0) { // else if gravity down
+                    }
+                    else if (anotherBlock.yGravity > 0) { // else if gravity down
                         if (oneBlock.y > anotherBlock.y) {
                             anotherBlock.y = oneBlock.y - oneBlock.height - 4;
+                            anotherBlock.yGravity = 0;
                         }
                     }
                 }
             }
-        })
+        })        
     });
+
     requestAnimationFrame(function () {
         updateBlock();
     });
@@ -103,38 +120,41 @@ function updateBlock() {
 updateBlock();
 
 function collision(rectA, rectB) {
-    return rectA.x < rectB.x + rectB.width + 7
-        && rectA.x + rectA.width + 7 > rectB.x
+    return rectA.x < rectB.x + rectB.width + 6
+        && rectA.x + rectA.width + 6 > rectB.x
         && rectA.y < rectB.y + rectB.height + 4
         && rectA.height + 4 + rectA.y > rectB.y;
 };
 
 document.onkeydown = function () {
-
     switch (event.keyCode) {
         case 37: //left arrow
             event.preventDefault();
-            xGravity = -14;
+            xGravity = -19;
             yGravity = 0;
             break;
-
+        
         case 38: //up arrow
             event.preventDefault();
-            yGravity = -10;
+            yGravity = -15;
             xGravity = 0;
             break;
-
+        
         case 39: //right arrow
             event.preventDefault();
-            xGravity = +14;
+            xGravity = +19;
             yGravity = 0;
             break;
-
+        
         case 40: //down arrow
             event.preventDefault();
-            yGravity = +10;
+            yGravity = +15;
             xGravity = 0;
-            break;
+            break;        
     }
-
-}
+    allBlocks.forEach(function (oneBlock) {
+        oneBlock.isNew = false;
+        oneBlock.xGravity = xGravity;
+        oneBlock.yGravity = yGravity;
+    })
+};
