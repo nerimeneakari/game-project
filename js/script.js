@@ -2,11 +2,34 @@ var myCanvas = document.querySelector("canvas");
 var ctx = myCanvas.getContext("2d");
 
 
-// var isNew;
+
+// function stuff( arg1, array ) {
+//     var freeSlotsArray = [];
+//     // array.splice( arg1, 1 );
+//     var positionsToString = [];
+//     for( var i = 0; i < blockPosition.length; i++ ) {
+//         positionsToString.push( blockPosition[i].toString())
+//     }
+//     var blocksToString = [];
+//     for( var j = 0; j < allblocks.length; j++ ) {
+//         // blocksToString.push( allBlocks[j].toString())
+//         var index = positionsToString.indexOf( allBlocks[j].toString() );
+//         freeSlotsArray = blockPosition.splice( index, 1 );
+//     }
+//     var blockIndexes = [];
+//     for( z = 0; z < blocksToString.length; z++ ) {
+//         blockIndexes.push( blockPosition.indexOf(blocksToString[z]))
+//     }
+//     var freeSlotsArray = [];
+//     for( w = 0; w < blockPosition.length; w++ ) {
+//         if( blockPosition[] ) {}
+//     }
+// }
+
 
 // --- toutes les positions possibles dans la grille ----
 var blockPosition = [
-    [0, 0], [76, 0], [154, 0], [230, 0],
+    [0, 0], [77, 0], [154, 0], [230, 0],
     [0, 37], [77, 37], [154, 37], [230, 37],
     [0, 75], [77, 75], [154, 75], [230, 75],
     [0, 113], [77, 113], [154, 113], [230, 113]
@@ -19,13 +42,12 @@ var newBlock = 0;
 var xGravity = 0;
 var yGravity = 0;
 
-function Block(myX, myY, isNew) {
+function Block(myX, myY) {
     this.x = myX;
     this.y = myY;
     this.width = 69;
     this.height = 33;
     this.value = Math.random() > 0.5 ? 2 : 4;
-    this.isNew = isNew;
     this.xGravity = 0;
     this.yGravity = 0;
 };
@@ -63,20 +85,22 @@ function positionFirstTwoBlocks() {
     for (var i = 0; i < 2; i++) {
         var oldRand = rand;
         while (rand === oldRand) {
-            var rand = Math.floor(Math.random() * blockPosition.length);
+            rand = Math.floor(Math.random() * blockPosition.length);
         }
         var block = new Block(blockPosition[rand][0], blockPosition[rand][1], false);
+        // stuff(rand, blockPosition);
         block.drawMe();
         allBlocks.push(block);
     }
+    // console.log(blockPosition);
 };
 
 positionFirstTwoBlocks();
 
 function checkFinish() {
     var isFinished = true;
-    allBlocks.forEach( function( eachBlock ) {
-        if( eachBlock.xGravity !== 0 || eachBlock.yGravity !== 0 ) {
+    allBlocks.forEach(function (eachBlock) {
+        if (eachBlock.xGravity !== 0 || eachBlock.yGravity !== 0) {
             isFinished = false;
         }
     })
@@ -87,15 +111,23 @@ function createNewBlock() {
     if( newBlock === 0 ) {
         var freeSlots = blockPosition.filter( function( eachSlot ) {
             for( var i = 0; i < allBlocks.length; i++ ) {
-                if( eachSlot[0] !== allBlocks[i].x && eachSlot[1] !== allBlocks[i].y ) {
-                    return eachSlot;
-                }
+                // console.log(freeSlots);
+                if(
+                    ( allBlocks[i].x >= eachSlot[0] - 5 && allBlocks[i].x <= eachSlot[0] + 5 )
+                    &&
+                    ( allBlocks[i].y >= eachSlot[1] - 5 && allBlocks[i].y <= eachSlot[1] + 5 )){
+                    return false;
+                }      
             }
-        })
+            return true;
+        });
         console.log( freeSlots );
         newBlock = 1;
     }
 }
+
+
+
 
 function updateBlock() {
     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
@@ -104,7 +136,7 @@ function updateBlock() {
         oneBlock.x += oneBlock.xGravity;
         oneBlock.y += oneBlock.yGravity;
         oneBlock.controlBoundries();
-        if( checkFinish() ) {
+        if (checkFinish()) {
             createNewBlock();
         }
         allBlocks.forEach(function (anotherBlock) {
@@ -145,7 +177,7 @@ function updateBlock() {
                     }
                 }
             }
-        })        
+        })
     });
 
     requestAnimationFrame(function () {
@@ -168,24 +200,24 @@ document.onkeydown = function () {
             xGravity = -19;
             yGravity = 0;
             break;
-        
+
         case 38: //up arrow
             event.preventDefault();
             yGravity = -15;
             xGravity = 0;
             break;
-        
+
         case 39: //right arrow
             event.preventDefault();
             xGravity = +19;
             yGravity = 0;
             break;
-        
+
         case 40: //down arrow
             event.preventDefault();
             yGravity = +15;
             xGravity = 0;
-            break;        
+            break;
     }
     allBlocks.forEach(function (oneBlock) {
         oneBlock.isNew = false;
