@@ -81,21 +81,17 @@ Block.prototype.controlBoundries = function () {
 };
 
 
-function positionFirstTwoBlocks() {
-    for (var i = 0; i < 2; i++) {
-        var oldRand = rand;
-        while (rand === oldRand) {
-            rand = Math.floor(Math.random() * blockPosition.length);
-        }
-        var block = new Block(blockPosition[rand][0], blockPosition[rand][1], false);
-        // stuff(rand, blockPosition);
-        block.drawMe();
-        allBlocks.push(block);
+function positionFirstBlock() {
+    var oldRand = rand;
+    while (rand === oldRand) {
+        rand = Math.floor(Math.random() * blockPosition.length);
     }
-    // console.log(blockPosition);
+    var block = new Block(blockPosition[rand][0], blockPosition[rand][1]);
+    block.drawMe();
+    allBlocks.push(block);
 };
 
-positionFirstTwoBlocks();
+positionFirstBlock();
 
 function checkFinish() {
     var isFinished = true;
@@ -108,26 +104,25 @@ function checkFinish() {
 }
 
 function createNewBlock() {
-    if( newBlock === 0 ) {
-        var freeSlots = blockPosition.filter( function( eachSlot ) {
-            for( var i = 0; i < allBlocks.length; i++ ) {
-                // console.log(freeSlots);
-                if(
-                    ( allBlocks[i].x >= eachSlot[0] - 5 && allBlocks[i].x <= eachSlot[0] + 5 )
-                    &&
-                    ( allBlocks[i].y >= eachSlot[1] - 5 && allBlocks[i].y <= eachSlot[1] + 5 )){
-                    return false;
-                }      
-            }
-            return true;
-        });
-        console.log( freeSlots );
-        newBlock = 1;
-    }
+    var freeSlots = blockPosition.filter( function( eachSlot ) {
+        for( var i = 0; i < allBlocks.length; i++ ) {
+            if(
+                ( allBlocks[i].x >= eachSlot[0] - 5 && allBlocks[i].x <= eachSlot[0] + 5 )
+                &&
+                ( allBlocks[i].y >= eachSlot[1] - 5 && allBlocks[i].y <= eachSlot[1] + 5 )){
+                return false;
+            }      
+        }
+        return true;
+    });
+    console.log( freeSlots );
+    rand = Math.floor(Math.random() * freeSlots.length);
+    var block = new Block(freeSlots[rand][0], freeSlots[rand][1]);
+    block.drawMe();
+    allBlocks.push(block);
+    
+    newBlock = 1;
 }
-
-
-
 
 function updateBlock() {
     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
@@ -136,7 +131,7 @@ function updateBlock() {
         oneBlock.x += oneBlock.xGravity;
         oneBlock.y += oneBlock.yGravity;
         oneBlock.controlBoundries();
-        if (checkFinish()) {
+        if (checkFinish() && newBlock === 0) {
             createNewBlock();
         }
         allBlocks.forEach(function (anotherBlock) {
