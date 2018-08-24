@@ -1,6 +1,32 @@
 var myCanvas = document.querySelector("canvas");
 var ctx = myCanvas.getContext("2d");
 
+
+
+// function stuff( arg1, array ) {
+//     var freeSlotsArray = [];
+//     // array.splice( arg1, 1 );
+//     var positionsToString = [];
+//     for( var i = 0; i < blockPosition.length; i++ ) {
+//         positionsToString.push( blockPosition[i].toString())
+//     }
+//     var blocksToString = [];
+//     for( var j = 0; j < allblocks.length; j++ ) {
+//         // blocksToString.push( allBlocks[j].toString())
+//         var index = positionsToString.indexOf( allBlocks[j].toString() );
+//         freeSlotsArray = blockPosition.splice( index, 1 );
+//     }
+//     var blockIndexes = [];
+//     for( z = 0; z < blocksToString.length; z++ ) {
+//         blockIndexes.push( blockPosition.indexOf(blocksToString[z]))
+//     }
+//     var freeSlotsArray = [];
+//     for( w = 0; w < blockPosition.length; w++ ) {
+//         if( blockPosition[] ) {}
+//     }
+// }
+
+
 // --- toutes les positions possibles dans la grille ----
 var blockPosition = [
     [0, 0], [77, 0], [154, 0], [230, 0],
@@ -56,13 +82,13 @@ Block.prototype.controlBoundries = function () {
 
 
 function positionFirstBlock() {
-    var oldRand = rand;
-    while (rand === oldRand) {
-        rand = Math.floor(Math.random() * blockPosition.length);
-    }
-    var block = new Block(blockPosition[rand][0], blockPosition[rand][1]);
-    block.drawMe();
-    allBlocks.push(block);
+        var oldRand = rand;
+        while (rand === oldRand) {
+            rand = Math.floor(Math.random() * blockPosition.length);
+        }
+        var block = new Block(blockPosition[rand][0], blockPosition[rand][1], false);
+        block.drawMe();
+        allBlocks.push(block);
 };
 
 positionFirstBlock();
@@ -117,12 +143,14 @@ function updateBlock() {
                         if (oneBlock.x > anotherBlock.x) {
                             anotherBlock.x = oneBlock.x - oneBlock.width - 8;
                             anotherBlock.xGravity = 0;
+                            // console.log(checkFinish());
                         }
                     }
                     else if (anotherBlock.xGravity < 0) { // else if gravity goes left
                         if (oneBlock.x < anotherBlock.x) {
                             anotherBlock.x = oneBlock.x + oneBlock.width + 8;
                             anotherBlock.xGravity = 0;
+                            // console.log(checkFinish());
                         }
                     }
                 }
@@ -132,12 +160,14 @@ function updateBlock() {
                         if (oneBlock.y < anotherBlock.y) {
                             anotherBlock.y = oneBlock.y + oneBlock.height + 4;
                             anotherBlock.yGravity = 0;
+                            // console.log(checkFinish());
                         }
                     }
                     else if (anotherBlock.yGravity > 0) { // else if gravity down
                         if (oneBlock.y > anotherBlock.y) {
                             anotherBlock.y = oneBlock.y - oneBlock.height - 4;
                             anotherBlock.yGravity = 0;
+                            // console.log(checkFinish());
                         }
                     }
                 }
@@ -196,4 +226,6 @@ document.onkeydown = function () {
         oneBlock.yGravity = yGravity;
     })
     newBlock = 0;
+    // var newBlock = new Block(new Block(blockPosition[rand][0], blockPosition[rand][1], false));
+    // newBlock.drawMe();
 };
